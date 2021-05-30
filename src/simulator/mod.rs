@@ -2,11 +2,11 @@ mod particle;
 use particle::{Particle};
 use rayon::prelude::*;
 use wasm_bindgen::prelude::*;
-
+extern crate wasm_bindgen;
 
 #[wasm_bindgen]
-pub(crate) struct Simulator {
-    pub(crate) particles: Vec<Particle>
+pub struct Simulator {
+    particles: Vec<Particle>
 }
 
 #[wasm_bindgen]
@@ -22,15 +22,18 @@ impl Simulator {
             particles.push(Particle::new());
         }
 
-        return Simulator {
+        Simulator {
             particles
         }
     }
     
-    pub fn greet(name: &str) {
+    pub fn greet(&self, name: &str) {
         alert(&format!("Hello, {}!", name));
     }
+}
 
+
+impl Simulator {
     pub fn next_state(&mut self) {
         self.update_positions();
         // self.update_velocities();
@@ -44,7 +47,5 @@ impl Simulator {
         println!("Done here...");
     }
 
-    fn update_velocities(&mut self) {
-        ;
-    }
+    fn update_velocities(&mut self) {}
 }

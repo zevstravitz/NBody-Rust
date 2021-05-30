@@ -37,6 +37,7 @@ impl Simulator {
         self.particles.as_ptr()
     }
 
+    // this probably shouldn't be here
     pub fn particle_size(&self) -> usize {
         size_of::<Particle>()
     }

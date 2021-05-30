@@ -8,12 +8,20 @@ use wasm_bindgen::prelude::*;
 #[global_allocator]
 static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
-#[wasm_bindgen]
-extern {
-    fn alert(s: &str);
-}
+mod simulator;
 
-#[wasm_bindgen]
-pub fn greet() {
-    alert("Hello, physics!");
-}
+// Simulator Constants
+const WINDOW_X: isize = 800;
+const WINDOW_Y: isize = 600;
+const AVG_RADIUS: usize = 30;
+
+// use simulator::Simulator;
+// #[wasm_bindgen]
+// extern {
+//     fn alert(s: &str);
+// }
+
+// #[wasm_bindgen]
+// pub fn greet(name: &str) {
+//     alert(&format!("Hello, {}!", name));
+// }

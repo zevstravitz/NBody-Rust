@@ -12,6 +12,6 @@ mod simulator;
 use simulator::Simulator;
 
 // Simulator Constants
-const WINDOW_X: isize = 800;
-const WINDOW_Y: isize = 600;
+const WINDOW_X: i32 = 800;
+const WINDOW_Y: i32 = 600;
 const AVG_RADIUS: usize = 30;

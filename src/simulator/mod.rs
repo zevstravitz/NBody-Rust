@@ -3,6 +3,7 @@ use particle::{Particle};
 use rayon::prelude::*;
 use wasm_bindgen::prelude::*;
 extern crate wasm_bindgen;
+use std::mem::size_of;
 
 #[wasm_bindgen]
 pub struct Simulator {
@@ -26,6 +27,19 @@ impl Simulator {
             particles
         }
     }
+
+    pub fn next_state(&mut self) {
+        self.update_positions();
+        // self.update_velocities();
+    }
+
+    pub fn particles(&self) -> *const Particle {
+        self.particles.as_ptr()
+    }
+
+    pub fn particle_size(&self) -> usize {
+        size_of::<Particle>()
+    }
     
     pub fn greet(&self, name: &str) {
         alert(&format!("Hello, {}!", name));
@@ -34,11 +48,6 @@ impl Simulator {
 
 
 impl Simulator {
-    pub fn next_state(&mut self) {
-        self.update_positions();
-        // self.update_velocities();
-    }
-
     fn update_positions(&mut self) {
         println!("{:?}", self.particles);
         self.particles.par_iter_mut().for_each(|particle: &mut Particle| {

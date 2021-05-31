@@ -1,13 +1,16 @@
-mod particle;
-use particle::{Particle};
+mod body;
+use body::{Body};
 use rayon::prelude::*;
 use wasm_bindgen::prelude::*;
 extern crate wasm_bindgen;
 use std::mem::size_of;
 
+use crate::utils;
+use crate::log;
+
 #[wasm_bindgen]
 pub struct Simulator {
-    particles: Vec<Particle>
+    bodies: Vec<Body>
 }
 
 #[wasm_bindgen]
@@ -17,15 +20,32 @@ extern {
 
 #[wasm_bindgen]
 impl Simulator {
-    pub fn new(num_particles: usize) -> Simulator {
-        let mut particles: Vec<Particle> = Vec::with_capacity(num_particles);
-        for idx in 0..num_particles {
-            particles.push(Particle::new());
+    pub fn new(num_bodies: usize) -> Simulator {
+        utils::set_panic_hook();
+
+        let mut bodies: Vec<Body> = Vec::with_capacity(num_bodies);
+        for idx in 0..num_bodies {
+            // log!("{}", idx);
+            bodies.push(Body::new());
         }
 
         Simulator {
-            particles
+            bodies
         }
+    }
+
+    pub fn get_x(&self, i: usize) -> f64 {
+        if let Some(pos) = self.bodies.get(i) {
+            return pos.x_pos;
+        }
+        0.0
+    }
+
+    pub fn get_y(&self, i: usize) -> f64 {
+        if let Some(pos) = self.bodies.get(i) {
+            return pos.y_pos;
+        }
+        0.0
     }
 
     pub fn next_state(&mut self) {
@@ -33,13 +53,13 @@ impl Simulator {
         // self.update_velocities();
     }
 
-    pub fn particles(&self) -> *const Particle {
-        self.particles.as_ptr()
+    pub fn bodies(&self) -> *const Body {
+        self.bodies.as_ptr()
     }
 
     // this probably shouldn't be here
-    pub fn particle_size(&self) -> usize {
-        size_of::<Particle>()
+    pub fn body_size(&self) -> usize {
+        size_of::<Body>()
     }
     
     pub fn greet(&self, name: &str) {
@@ -50,10 +70,13 @@ impl Simulator {
 
 impl Simulator {
     fn update_positions(&mut self) {
-        println!("{:?}", self.particles);
-        self.particles.par_iter_mut().for_each(|particle: &mut Particle| {
-            particle.update_position();
-        });
+        // log!("{:?}", self.bodies);
+        // self.bodies.par_iter_mut().for_each(|body: &mut Body| {
+        //     body.update_position();
+        // });
+        for body in self.bodies.iter_mut() {
+            body.update_position();
+        }
         println!("Done here...");
     }
 

@@ -1,28 +1,35 @@
 import { Simulator, Particle } from "nbody-physics";
-import { memory } from "nbody-physics/physics_bg";
+// import { memory } from "nbody-physics/physics_bg";
 
 const NUM_PARTICLES = 4;
 const canvas = document.getElementById("nbody-canvas");
+canvas.width = 800;
+canvas.height = 600;
 let simulator = Simulator.new(NUM_PARTICLES);
 
 const ctx = canvas.getContext("2d");
 
-const renderLoop = () => {
-    const particlesPtr = simulator.particles();
-    const particleSize = simulator.particle_size();
-    const particles = new Uint8Array(
-        memory.buffer,
-        particlesPtr,
-        NUM_PARTICLES * particleSize
-    );
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
+const renderLoop = async () => {
+    await drawBodies();
+    simulator.next_state();
+    requestAnimationFrame(renderLoop);
+}
+
+const drawBodies = async () => {
     // We want to go into the buffer allocated for WASM with an offset of
-    // index * PARTICLE_STRUCT_SIZE
+    ctx.clearRect(0,0, canvas.width, canvas.height);
+    // await sleep(2000);
     for (let i = 0; i < NUM_PARTICLES; i++) {
+        console.log("Updating particle ", i);
+        // console.log(canvas.width, canvas.height);
         ctx.beginPath();
         ctx.arc(
-            particles[i*particleSize].get_x(),
-            particles[i*particleSize].get_y(),
+            simulator.get_x(i),
+            simulator.get_y(i),
             10,
             0,
             2 * Math.PI,
@@ -31,9 +38,6 @@ const renderLoop = () => {
         ctx.fillStyle = 'green';
         ctx.fill();
     }
-    simulator.next_state();
-
-    requestAnimationFrame(renderLoop);
 }
 
 const main = () => {

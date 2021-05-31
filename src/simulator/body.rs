@@ -4,16 +4,17 @@ use crate::{AVG_RADIUS, WINDOW_X};
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
+#[repr(C)]
 #[derive(Debug)]
-pub struct Particle {
-    x_pos: i32,
-    y_pos: i32,
-    x_vel: i32,
-    y_vel: i32,
-    pub radius: usize
+pub struct Body {
+    pub(crate) x_pos: f64,
+    pub(crate) y_pos: f64,
+    x_vel: f64,
+    y_vel: f64,
+    pub radius: u32
 }
 
-impl fmt::Display for Particle {
+impl fmt::Display for Body {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         // Use `self.number` to refer to each positional data point.
         write!(f, "({}, {})", self.x_pos, self.y_pos)
@@ -21,35 +22,35 @@ impl fmt::Display for Particle {
 }
 
 #[wasm_bindgen]
-impl Particle {
-    // pub fn get_me(ptr: &Particle) -> Particle {
+impl Body {
+    // pub fn get_me(ptr: &Body) -> Body {
     //     *ptr
     // }
 
-    pub fn get_x(&self) -> i32 {
+    pub fn get_x(&self) -> f64 {
         self.x_pos
     }
 
-    pub fn get_y(&self) -> i32 {
+    pub fn get_y(&self) -> f64 {
         self.y_pos
     }
 }
 
-impl Particle {
-    pub(crate) fn new() -> Particle {
+impl Body {
+    pub(crate) fn new() -> Body {
         // Create normal distribution
         // let mut rng = rand::thread_rng();
         // let normal = Normal::new(crate::AVG_RADIUS, 10);
 
         // Radius of circle
-        let radius = (random() as usize) * crate::AVG_RADIUS;
+        let radius = (random() * (crate::AVG_RADIUS as f64)) as u32;
 
-        // Return new Particle
-        Particle {
-            x_pos: (random() as i32) * crate::WINDOW_X,
-            y_pos: (random() as i32) * crate::WINDOW_Y,
-            x_vel: ((random() as i32) * 20 + -10),
-            y_vel: ((random() as i32) * 20 + -10),
+        // Return new Body
+        Body {
+            x_pos: random() * 200.0 + 400.0,
+            y_pos: random()  * 200.0 + 400.0,
+            x_vel: (random()  * 20.0 + -10.0),
+            y_vel: (random() * 20.0 + -10.0),
             radius
         }
     }

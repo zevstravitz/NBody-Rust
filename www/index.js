@@ -22,7 +22,7 @@ function init() {
     camera.position.z = 4000;
 
     scene = new THREE.Scene();
-    // scene.fog = new THREE.FogExp2( 0x000000, 0.001 );
+    scene.fog = new THREE.FogExp2( 0x000000, 0.0001 );
 
     const geometry = new THREE.BufferGeometry();
     const vertices = [];
@@ -118,8 +118,8 @@ async function render() {
 
     particles.geometry.attributes.position.needsUpdate = true;
 
-    // const h = ( 360 * ( 1.0 + time ) % 360 ) / 360;
-    // material.color.setHSL( h, 0.5, 0.5 );
+    const h = ( 360 * ( 1.0 + time ) % 360 ) / 360;
+    material.color.setHSL( h, 0.5, 0.5 );
 
     renderer.render( scene, camera );
 

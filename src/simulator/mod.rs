@@ -41,7 +41,6 @@ impl Simulator {
     }
 
     pub fn next_state(&mut self) {
-        log!("{:?}", self.bodies);
         self.update_positions();
         self.update_velocities();
     }

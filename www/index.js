@@ -2,10 +2,9 @@ import { memory } from "nbody-physics/physics_bg";
 import * as THREE from 'three';
 import { Simulator } from "nbody-physics";
 
-const NUM_PARTICLES = 50;
+const NUM_PARTICLES = 100;
 // const canvas = document.getElementById("nbody-canvas");
 let simulator = Simulator.new(NUM_PARTICLES);
-
 
 let camera, scene, renderer, material, particles;
 let mouseX = 0, mouseY = 0;
@@ -19,7 +18,8 @@ animate();
 function init() {
 
     camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 2, 5000 );
-    camera.position.z = 5000;
+    camera.position.z = 3000;
+
 
     scene = new THREE.Scene();
     // scene.fog = new THREE.FogExp2( 0x000000, 0.0001 );
@@ -38,10 +38,14 @@ function init() {
         vertices.push( x, y, z );
     }
 
+    // for ( let i = 0; i < NUM_PARTICLES; i ++ ) {
+    //     console.log(simulator.get_dim(i, 0), simulator.get_dim(i, 1), simulator.get_dim(i, 2));
+    // }
+
     geometry.setAttribute( 'position', new THREE.Float32BufferAttribute( vertices, 3 ) );
 
-    material = new THREE.PointsMaterial( { size: 35, sizeAttenuation: true, map: sprite, alphaTest: 0.5, transparent: true } );
-    material.color.setHSL( 1.0, 0.3, 0.7 );
+    material = new THREE.PointsMaterial( { size: 40, sizeAttenuation: true, map: sprite, alphaTest: 0.5, transparent: true } );
+    material.color.setHSL( 225.0, 0.73, 0.93 );
 
     particles = new THREE.Points( geometry, material );
     scene.add( particles );
@@ -89,12 +93,12 @@ function animate() {
     render();
 }
 
-function render() {
+async function render() {
 
     const time = Date.now() * 0.00005;
+    camera.position.x = 500.0 - mouseX;
+    camera.position.y = 500.0 + mouseY;
 
-    camera.position.x += ( mouseX - camera.position.x ) * 0.05;
-    camera.position.y += ( - mouseY - camera.position.y ) * 0.05;
     camera.lookAt( scene.position );
 
     const positions = particles.geometry.attributes.position.array;
@@ -106,17 +110,20 @@ function render() {
     }
 
     simulator.next_state();
+    await sleep(5000);
     // console.log(simulator.get_dim(0, 0));
 
     particles.geometry.attributes.position.needsUpdate = true;
 
-    camera.lookAt( scene.position );
-
-    const h = ( 360 * ( 1.0 + time ) % 360 ) / 360;
-    material.color.setHSL( h, 0.5, 0.5 );
+    // const h = ( 360 * ( 1.0 + time ) % 360 ) / 360;
+    // material.color.setHSL( h, 0.5, 0.5 );
 
     renderer.render( scene, camera );
 
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 // import { Simulator } from "nbody-physics";

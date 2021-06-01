@@ -1,5 +1,6 @@
 use crate::simulator::{Simulator, Body};
 use crate::{G_CONSTANT, DIMENSIONS, DAMPENING_FACTOR};
+use crate::log;
 
 pub fn all_body_update(sim: &mut Simulator) {
     for i in 0..sim.bodies.len() {
@@ -9,15 +10,22 @@ pub fn all_body_update(sim: &mut Simulator) {
                 continue
             }
 
+            // Distance between particles
             let dist = sim.bodies[i].dist(&sim.bodies[j]);
+
+            // Force unit vector -> Indicates direction
             let unit_vec = sim.bodies[i].unit_to(&sim.bodies[j], dist);
 
-            let numerator = (G_CONSTANT * (sim.bodies[i].radius as f64) * (sim.bodies[j].radius as f64))/(dist.powi(2) + (DAMPENING_FACTOR as f64).powi(2));
+            // Force Scalar
+            let force = (G_CONSTANT * (sim.bodies[i].radius) * (sim.bodies[j].radius))/(dist.powi(2) + DAMPENING_FACTOR.powi(2));
+
+            // Get dV Vector
             for dim in 0..DIMENSIONS {
-                d_v[dim] = numerator * unit_vec[dim];
+                d_v[dim] = force * unit_vec[dim];
             }
         }
 
+        // Apply dV vector to
         for dim in 0..DIMENSIONS {
             sim.bodies[i].vel[dim] += d_v[dim];
         }

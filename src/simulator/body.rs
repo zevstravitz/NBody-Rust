@@ -8,7 +8,7 @@ use wasm_bindgen::prelude::*;
 pub struct Body {
     pub pos: [f64; DIMENSIONS],
     pub vel: [f64; DIMENSIONS],
-    pub radius: u32
+    pub radius: f64
 }
 
 impl fmt::Display for Body {
@@ -25,13 +25,14 @@ impl Body {
         // let normal = Normal::new(crate::AVG_RADIUS, 10);
 
         // Radius of circle
-        let radius = (random() * (crate::AVG_RADIUS as f64)) as u32;
+        let radius = crate::AVG_RADIUS;
+        // alt:  (random() * 5.0) + crate::AVG_RADIUS;
 
         // Return new Body
         Body {
-            pos: [random() * 2000.0 - 400.0,
-                    random()  * 2000.0 - 400.0,
-                    random() * 2000.0 - 400.0],
+            pos: [250.0 + random() * 500.0,
+                  250.0 + random()  * 500.0,
+                   random() * 1000.0],
             vel: [(random()  * 20.0 + -5.0),
                   (random() * 10.0 + -5.0),
                   (random() * 10.0 + -5.0)],
@@ -46,7 +47,7 @@ impl Body {
     pub fn dist(&self, other: &Body) -> f64 {
         let mut temp = 0.0;
         for dim in 0..DIMENSIONS {
-            temp += (other.pos[dim] - self.pos[dim])
+            temp += other.pos[dim] - self.pos[dim]
         }
         (temp).powf(0.5)
     }
@@ -54,7 +55,7 @@ impl Body {
     pub fn unit_to(&self, other: &Body, dist: f64) -> [f64; DIMENSIONS] {
         let mut unit = [0.0; DIMENSIONS];
         for dim in 0..DIMENSIONS {
-            unit[dim] = (self.pos[dim] - self.pos[dim])/dist
+            unit[dim] = (other.pos[dim] - self.pos[dim])/dist
         }
         unit
     }

@@ -4,7 +4,6 @@ extern crate wasm_bindgen;
 use std::mem::size_of;
 
 use crate::utils;
-use crate::log;
 
 mod body;
 use body::{Body};

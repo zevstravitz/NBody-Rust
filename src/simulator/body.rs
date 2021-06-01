@@ -29,9 +29,9 @@ impl Body {
 
         // Return new Body
         Body {
-            pos: [random() * 40.0 + 400.0,
-                    random()  * 40.0 + 400.0,
-                    random() * 40.0 + 400.0],
+            pos: [random() * 2000.0 - 400.0,
+                    random()  * 2000.0 - 400.0,
+                    random() * 2000.0 - 400.0],
             vel: [(random()  * 20.0 + -5.0),
                   (random() * 10.0 + -5.0),
                   (random() * 10.0 + -5.0)],
@@ -39,12 +39,8 @@ impl Body {
         }
     }
 
-    pub fn get_x(&self) -> f64 {
-        self.pos[0]
-    }
-
-    pub fn get_y(&self) -> f64 {
-        self.pos[1]
+    pub fn get_dim(&self, dim: usize) -> f64 {
+        self.pos[dim]
     }
 
     pub fn dist(&self, other: &Body) -> f64 {

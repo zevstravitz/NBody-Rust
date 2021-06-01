@@ -20,5 +20,5 @@ const AVG_RADIUS: usize = 1;
 const DIMENSIONS: usize = 3;
 
 // Gravity Constants
-const G_CONSTANT: f64 = 0.02;
+const G_CONSTANT: f64 = 2.0;
 const DAMPENING_FACTOR: usize = 100;

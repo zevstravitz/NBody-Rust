@@ -37,18 +37,8 @@ impl Simulator {
         }
     }
 
-    pub fn get_x(&self, i: usize) -> f64 {
-        if let Some(body) = self.bodies.get(i) {
-            return body.get_x();
-        }
-        0.0
-    }
-
-    pub fn get_y(&self, i: usize) -> f64 {
-        if let Some(body) = self.bodies.get(i) {
-            return body.get_y();
-        }
-        0.0
+    pub fn get_dim(&self, i: usize, dim: usize) -> f64 {
+        self.bodies[i].get_dim(dim)
     }
 
     pub fn next_state(&mut self) {

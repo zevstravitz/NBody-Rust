@@ -33,7 +33,7 @@ impl Body {
             pos: [250.0 + random() * 500.0,
                   250.0 + random()  * 500.0,
                    random() * 1000.0],
-            vel: [(random()  * 20.0 + -5.0),
+            vel: [(random()  * 10.0 + -5.0),
                   (random() * 10.0 + -5.0),
                   (random() * 10.0 + -5.0)],
             radius
@@ -47,7 +47,7 @@ impl Body {
     pub fn dist(&self, other: &Body) -> f64 {
         let mut temp = 0.0;
         for dim in 0..DIMENSIONS {
-            temp += other.pos[dim] - self.pos[dim]
+            temp += (other.pos[dim] - self.pos[dim]).powi(2)
         }
         (temp).powf(0.5)
     }

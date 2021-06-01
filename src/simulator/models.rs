@@ -3,9 +3,9 @@ use crate::{G_CONSTANT, DIMENSIONS, DAMPENING_FACTOR};
 use crate::log;
 
 pub fn all_body_update(sim: &mut Simulator) {
-    for i in 0..sim.bodies.len() {
+    for i in 0..sim.bodies.capacity() {
         let mut d_v = [0.0; DIMENSIONS];
-        for j in 0..sim.bodies.len() {
+        for j in 0..sim.bodies.capacity() {
             if i == j {
                 continue
             }

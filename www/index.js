@@ -2,7 +2,8 @@ import { memory } from "nbody-physics/physics_bg";
 import * as THREE from 'three';
 import { Simulator } from "nbody-physics";
 
-const NUM_PARTICLES = 100;
+const NUM_PARTICLES = 1000;
+const DIMENSIONS = 3;
 // const canvas = document.getElementById("nbody-canvas");
 let simulator = Simulator.new(NUM_PARTICLES);
 
@@ -18,11 +19,10 @@ animate();
 function init() {
 
     camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 2, 5000 );
-    camera.position.z = 3000;
-
+    camera.position.z = 4000;
 
     scene = new THREE.Scene();
-    // scene.fog = new THREE.FogExp2( 0x000000, 0.0001 );
+    // scene.fog = new THREE.FogExp2( 0x000000, 0.001 );
 
     const geometry = new THREE.BufferGeometry();
     const vertices = [];
@@ -42,7 +42,7 @@ function init() {
     //     console.log(simulator.get_dim(i, 0), simulator.get_dim(i, 1), simulator.get_dim(i, 2));
     // }
 
-    geometry.setAttribute( 'position', new THREE.Float32BufferAttribute( vertices, 3 ) );
+    geometry.setAttribute( 'position', new THREE.Float32BufferAttribute( vertices, DIMENSIONS ) );
 
     material = new THREE.PointsMaterial( { size: 40, sizeAttenuation: true, map: sprite, alphaTest: 0.5, transparent: true } );
     material.color.setHSL( 225.0, 0.73, 0.93 );
@@ -96,21 +96,24 @@ function animate() {
 async function render() {
 
     const time = Date.now() * 0.00005;
-    camera.position.x = 500.0 - mouseX;
-    camera.position.y = 500.0 + mouseY;
+    camera.position.x = 1000 + windowHalfX - mouseX*2;
+    camera.position.y = 500 + windowHalfY + mouseY*2;
 
     camera.lookAt( scene.position );
 
     const positions = particles.geometry.attributes.position.array;
+    // console.log(positions);
 
-    for (let i = 0; i < NUM_PARTICLES - 3; i+=3) {
-        positions[i] = simulator.get_dim(i, 0)
-        positions[i+1] = simulator.get_dim(i, 1)
-        positions[i+2] = simulator.get_dim(i, 2)
+    for (let i = 0; i < NUM_PARTICLES; i++) {
+        for (let dim = 0; dim < DIMENSIONS; dim++) {
+            positions[i*DIMENSIONS+dim] = simulator.get_dim(i, dim);
+        }
     }
 
+    // WHERE WE UPDATE THE POSITIONS
     simulator.next_state();
-    await sleep(5000);
+
+    // await sleep(5000);
     // console.log(simulator.get_dim(0, 0));
 
     particles.geometry.attributes.position.needsUpdate = true;

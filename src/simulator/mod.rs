@@ -4,6 +4,7 @@ extern crate wasm_bindgen;
 use std::mem::size_of;
 
 use crate::utils;
+use crate::log;
 
 mod body;
 use body::{Body};
@@ -26,8 +27,7 @@ impl Simulator {
         utils::set_panic_hook();
 
         let mut bodies: Vec<Body> = Vec::with_capacity(num_bodies);
-        for idx in 0..num_bodies {
-            // log!("{}", idx);
+        for _idx in 0..num_bodies {
             bodies.push(Body::new());
         }
 
@@ -41,6 +41,7 @@ impl Simulator {
     }
 
     pub fn next_state(&mut self) {
+        log!("{:?}", self.bodies);
         self.update_positions();
         self.update_velocities();
     }

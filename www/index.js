@@ -2,7 +2,6 @@ import { memory } from "nbody-physics/physics_bg";
 import * as THREE from 'three';
 import { Simulator } from "nbody-physics";
 
-
 const NUM_PARTICLES = 50;
 // const canvas = document.getElementById("nbody-canvas");
 let simulator = Simulator.new(NUM_PARTICLES);
@@ -19,11 +18,11 @@ animate();
 
 function init() {
 
-    camera = new THREE.PerspectiveCamera( 55, window.innerWidth / window.innerHeight, 2, 2000 );
-    camera.position.z = 1000;
+    camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 2, 5000 );
+    camera.position.z = 5000;
 
     scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2( 0x000000, 0.001 );
+    // scene.fog = new THREE.FogExp2( 0x000000, 0.0001 );
 
     const geometry = new THREE.BufferGeometry();
     const vertices = [];
@@ -107,7 +106,7 @@ function render() {
     }
 
     simulator.next_state();
-    console.log(simulator.get_dim(0, 0));
+    // console.log(simulator.get_dim(0, 0));
 
     particles.geometry.attributes.position.needsUpdate = true;
 

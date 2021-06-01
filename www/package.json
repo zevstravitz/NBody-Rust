@@ -27,7 +27,8 @@
   },
   "homepage": "https://github.com/rustwasm/create-wasm-app#readme",
   "dependencies": {
-    "nbody-physics": "file:../pkg"
+    "nbody-physics": "file:../pkg",
+    "three": "^0.129.0"
   },
   "devDependencies": {
     "copy-webpack-plugin": "^5.0.0",

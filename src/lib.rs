@@ -11,7 +11,14 @@ static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 mod simulator;
 use simulator::Simulator;
 
-// Simulator Constants
+// Display Constants
 const WINDOW_X: i32 = 800;
 const WINDOW_Y: i32 = 600;
-const AVG_RADIUS: usize = 30;
+
+// Simulator Constants
+const AVG_RADIUS: usize = 1;
+const DIMENSIONS: usize = 3;
+
+// Gravity Constants
+const G_CONSTANT: f64 = 0.02;
+const DAMPENING_FACTOR: usize = 100;

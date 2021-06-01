@@ -1,38 +1,20 @@
 use js_sys::Math::random;
 use std::fmt;
-use crate::{AVG_RADIUS, WINDOW_X};
+use crate::{AVG_RADIUS, WINDOW_X, DIMENSIONS};
 use wasm_bindgen::prelude::*;
 
-#[wasm_bindgen]
 #[repr(C)]
 #[derive(Debug)]
 pub struct Body {
-    pub(crate) x_pos: f64,
-    pub(crate) y_pos: f64,
-    x_vel: f64,
-    y_vel: f64,
+    pub pos: [f64; DIMENSIONS],
+    pub vel: [f64; DIMENSIONS],
     pub radius: u32
 }
 
 impl fmt::Display for Body {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         // Use `self.number` to refer to each positional data point.
-        write!(f, "({}, {})", self.x_pos, self.y_pos)
-    }
-}
-
-#[wasm_bindgen]
-impl Body {
-    // pub fn get_me(ptr: &Body) -> Body {
-    //     *ptr
-    // }
-
-    pub fn get_x(&self) -> f64 {
-        self.x_pos
-    }
-
-    pub fn get_y(&self) -> f64 {
-        self.y_pos
+        write!(f, "({}, {})", self.pos[0], self.pos[1])
     }
 }
 
@@ -47,16 +29,42 @@ impl Body {
 
         // Return new Body
         Body {
-            x_pos: random() * 200.0 + 400.0,
-            y_pos: random()  * 200.0 + 400.0,
-            x_vel: (random()  * 20.0 + -10.0),
-            y_vel: (random() * 20.0 + -10.0),
+            pos: [random() * 40.0 + 400.0,
+                    random()  * 40.0 + 400.0,
+                    random() * 40.0 + 400.0],
+            vel: [(random()  * 20.0 + -5.0),
+                  (random() * 10.0 + -5.0),
+                  (random() * 10.0 + -5.0)],
             radius
         }
     }
 
+    pub fn get_x(&self) -> f64 {
+        self.pos[0]
+    }
+
+    pub fn get_y(&self) -> f64 {
+        self.pos[1]
+    }
+
+    pub fn dist(&self, other: &Body) -> f64 {
+        let mut temp = 0.0;
+        for dim in 0..DIMENSIONS {
+            temp += (other.pos[dim] - self.pos[dim])
+        }
+        (temp).powf(0.5)
+    }
+
+    pub fn unit_to(&self, other: &Body, dist: f64) -> [f64; DIMENSIONS] {
+        let mut unit = [0.0; DIMENSIONS];
+        for dim in 0..DIMENSIONS {
+            unit[dim] = (self.pos[dim] - self.pos[dim])/dist
+        }
+        unit
+    }
+
     pub fn update_position(&mut self) {
-        self.x_pos += self.x_vel;
-        self.y_pos += self.y_vel;
+        self.pos[0] += self.vel[0];
+        self.pos[1] += self.vel[1];
     }
 }

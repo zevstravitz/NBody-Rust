@@ -1,5 +1,3 @@
-mod body;
-use body::{Body};
 use rayon::prelude::*;
 use wasm_bindgen::prelude::*;
 extern crate wasm_bindgen;
@@ -7,6 +5,11 @@ use std::mem::size_of;
 
 use crate::utils;
 use crate::log;
+
+mod body;
+use body::{Body};
+
+mod models;
 
 #[wasm_bindgen]
 pub struct Simulator {
@@ -35,22 +38,22 @@ impl Simulator {
     }
 
     pub fn get_x(&self, i: usize) -> f64 {
-        if let Some(pos) = self.bodies.get(i) {
-            return pos.x_pos;
+        if let Some(body) = self.bodies.get(i) {
+            return body.get_x();
         }
         0.0
     }
 
     pub fn get_y(&self, i: usize) -> f64 {
-        if let Some(pos) = self.bodies.get(i) {
-            return pos.y_pos;
+        if let Some(body) = self.bodies.get(i) {
+            return body.get_y();
         }
         0.0
     }
 
     pub fn next_state(&mut self) {
         self.update_positions();
-        // self.update_velocities();
+        self.update_velocities();
     }
 
     pub fn bodies(&self) -> *const Body {
@@ -67,7 +70,6 @@ impl Simulator {
     }
 }
 
-
 impl Simulator {
     fn update_positions(&mut self) {
         // log!("{:?}", self.bodies);
@@ -77,8 +79,9 @@ impl Simulator {
         for body in self.bodies.iter_mut() {
             body.update_position();
         }
-        println!("Done here...");
     }
 
-    fn update_velocities(&mut self) {}
+    fn update_velocities(&mut self) {
+        models::all_body_update(self);
+    }
 }

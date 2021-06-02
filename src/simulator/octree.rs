@@ -18,38 +18,52 @@
 
 use crate::{DIMENSIONS, BOUNDS};
 mod body;
+use body::Body;
 
-struct Octant {
+// struct Constraints {
+//     min: f64,
+//     max: f64
+// }
+
+// struct Bounds {
+//     x: Constraints,
+//     y: Constraints,
+//     z: Constraints
+// }
+
+// bounds: [Bounds; 8]
+
+
+struct Octree {
     content: BHTree,
-    min: [f64; DIMENSIONS],
-    max: [f64; DIMENSIONS]
+    center: [f64; DIMENSIONS]
+    radius: f64
 }
 
 enum BHTree {
     Empty,
-    Internal(Octree),
-    External(body::Body)
+    Internal(InternalNode),
+    External(Body)
 }
 
-struct Octree {
-    com: Option<COM>,
-    children: [Octant; 8]
+struct InternalNode {
+    com: COM,
+    children: [Octree; 8]
 }
 
 struct COM {
-    pos: [f64; 3]
+    pos: [f64; DIMENSIONS],
+    total_mass: f64
 }
 
 
 impl Octree {
-    fn new(sim: &mut sim) -> {
-        let mut octree = Octant {
-            content: BHTree::Empty,
-            min: [BOUNDS; DIMENSIONS],
-            max: [-1*BOUNDS; DIMENSIONS]
+    fn new(center: [f64; DIMENSIONS], radius: usize) -> Octree{
+        let mut octree = Octree {
+            content: None,
+            center,
+            radius
         }
-
-        self.insert_bodies(&sim.bodies)
     }
 
     fn insert_bodies(&mut self, bodies: &Vec<Body>) {
@@ -58,19 +72,83 @@ impl Octree {
         }
     }
 
-    fn insert(&mut self, &body: Body) {
-        //insert body with x,y 
-        // if children(x,y) -> empty 
-        // add it there 
-
-        oct = find_quadrant
-        
+    fn insert(&mut self, body: &Body) {
+        match self.content {
+            BHTree::Empty => {
+                self.content = BHTree::External(body);
+            },
+            BHTree::Internal(tree) => {
+                let octant = find_octant(body);
+                tree.children[octant].insert(body);
+                tree.update_com(body);
+            },
+            BHTree::External(ext) => {
+                let previous = ext
+                self.content = InternalNode::new(self.center)
+                self.insert(previous);
+                self.insert(body);
+            }
+        }
     }
 
-    fn find_quadrant(&self, body: &Body) -> Octree {
-        
+    fn find_octant(&self, body: &Body) -> int {
+        match (
+            body.pos[2] > self.center[2],
+            body.pos[1] > self.center[1],
+            body.pos[0] > self.center[0],
+        ) {
+            (true, true, true) => 0,
+            (true, true, false) => 1,
+            (true, false, true) => 2,
+            (true, false, false) => 3,
+            (false, true, true) => 4,
+            (false, true, false) => 5,
+            (false, false, true) => 6,
+            (false, false, false) => 7,
+        }
     }
 }
+// struct InternalNode {
+//     com: COM,
+//     children: [Octree; 8]
+// }
+impl InternalNode {
+    fn new() -> InternalNode {
+        let children = [Octree; 8];
+        children[0] = Octree::new([
+            self.radius/2 + op*center[0],
+            self.radius/2 + op*center[1],
+            self.radius/2 + op*center[2],
+        ], self.radius/2)
+
+        InternalNode {
+            com: COM {
+                pos: [0; DIMENSIONS]
+                total_mass: 0
+            },
+            children
+        }
+    }
+    
+    fn update_com(&self, body: &Body) {
+        let temp_total  = self.com.total_mass + body.mass;
+        for dim in 0..DIMENSIONS {
+            self.com.pos[dim] = (body.pos[dim] * body.mass + self.com.pos[dim] * self.com.total_mass)/(total_total)
+        }
+        self.com.total_mass = temp_total;   
+    }
+}
+
+/*
+
+
+for i in 0..8 {
+    children[i] = (center.x + radius*(-1)^n, center.y + radius* (-1) ^ n+1,
+}
+
+
+
+*/ 
 
 
 

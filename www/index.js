@@ -17,8 +17,8 @@ animate();
 
 function init() {
 
-    camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 2, 5000 );
-    camera.position.z = 4000;
+    camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 2, 10000 );
+    camera.position.z = 5000;
 
     scene = new THREE.Scene();
     // scene.fog = new THREE.FogExp2( 0x000000, 0.0001 );
@@ -111,7 +111,6 @@ async function render() {
     const time = Date.now() * 0.00005;
     camera.position.x = 1000 + windowHalfX - mouseX*2;
     camera.position.y = 500 + windowHalfY + mouseY*2;
-    camera.position.z += 1
 
     camera.lookAt( scene.position );
 

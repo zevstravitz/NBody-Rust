@@ -4,7 +4,6 @@ import { Simulator } from "nbody-physics";
 
 const NUM_PARTICLES = 1000;
 const DIMENSIONS = 3;
-// const canvas = document.getElementById("nbody-canvas");
 let simulator = Simulator.new(NUM_PARTICLES);
 
 let camera, scene, renderer, material, particles;
@@ -27,7 +26,7 @@ function init() {
     const geometry = new THREE.BufferGeometry();
     const vertices = [];
 
-    const sprite = new THREE.TextureLoader().load( 'disc.png' );
+    const sprite = new THREE.TextureLoader().load( 'ball.png' );
 
     for ( let i = 0; i < NUM_PARTICLES; i ++ ) {
 
@@ -44,7 +43,7 @@ function init() {
 
     geometry.setAttribute( 'position', new THREE.Float32BufferAttribute( vertices, DIMENSIONS ) );
 
-    material = new THREE.PointsMaterial( { size: 40, sizeAttenuation: true, map: sprite, alphaTest: 0.5, transparent: true } );
+    material = new THREE.PointsMaterial( { size: 55, sizeAttenuation: true, map: sprite, alphaTest: 0.5, transparent: true } );
     material.color.setHSL( 225.0, 0.73, 0.93 );
 
     particles = new THREE.Points( geometry, material );
@@ -60,6 +59,7 @@ function init() {
 
     document.body.style.touchAction = 'none';
     document.body.addEventListener( 'pointermove', onPointerMove );
+    // document.body.addEventListener( 'scroll', onScroll );
 
     window.addEventListener( 'resize', onWindowResize );
 
@@ -84,7 +84,20 @@ function onPointerMove( event ) {
     mouseY = event.clientY - windowHalfY;
 }
 
+
+// let lastScrollTop = 0;
+// function onScroll ( event ) {
+//     if ( event.isPrimary === false ) return;
 //
+//     let st = window.pageYOffset || document.documentElement.scrollTop;
+//     if (st > lastScrollTop){
+//         camera.position.z -= 10;
+//     } else {
+//         camera.position.z += 10;
+//     }
+//     lastScrollTop = st <= 0 ? 0 : st;
+// }
+
 
 function animate() {
 
@@ -98,6 +111,7 @@ async function render() {
     const time = Date.now() * 0.00005;
     camera.position.x = 1000 + windowHalfX - mouseX*2;
     camera.position.y = 500 + windowHalfY + mouseY*2;
+    camera.position.z += 1
 
     camera.lookAt( scene.position );
 
@@ -128,51 +142,5 @@ async function render() {
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
-
-// import { Simulator } from "nbody-physics";
-//
-//
-// const NUM_PARTICLES = 50;
-// const canvas = document.getElementById("nbody-canvas");
-// let simulator = Simulator.new(NUM_PARTICLES);
-//
-// const ctx = canvas.getContext("2d");
-//
-// function sleep(ms) {
-//     return new Promise(resolve => setTimeout(resolve, ms));
-// }
-//
-// const renderLoop = async () => {
-//     drawBodies();
-//     await sleep(5000);
-//     simulator.next_state();
-//     requestAnimationFrame(renderLoop);
-// }
-//
-// const drawBodies = () => {
-//     // We want to go into the buffer allocated for WASM with an offset of
-//     ctx.clearRect(0,0, canvas.width, canvas.height);
-//     for (let i = 0; i < NUM_PARTICLES; i++) {
-//         console.log(simulator.get_x(i), simulator.get_y(i));
-//         ctx.beginPath();
-//         ctx.arc(
-//             simulator.get_x(i),
-//             simulator.get_y(i),
-//             3,
-//             0,
-//             2 * Math.PI,
-//             false
-//         );
-//         ctx.fillStyle = 'blue';
-//         ctx.fill();
-//     }
-// }
-//
-// const main = () => {
-//     renderLoop();
-// }
-//
-// main();
-
 
 

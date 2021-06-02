@@ -1,5 +1,5 @@
 [package]
-name = "physics"
+name = "nbody-sim"
 version = "0.1.0"
 authors = ["Zev Stravitz <zevstravitz@verizon.net>"]
 edition = "2018"

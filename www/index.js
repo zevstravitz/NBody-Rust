@@ -22,7 +22,7 @@ function init() {
     camera.position.z = 4000;
 
     scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2( 0x000000, 0.0001 );
+    // scene.fog = new THREE.FogExp2( 0x000000, 0.0001 );
 
     const geometry = new THREE.BufferGeometry();
     const vertices = [];

@@ -1,6 +1,6 @@
 use js_sys::Math::random;
 use std::fmt;
-use crate::{AVG_RADIUS, WINDOW_X, DIMENSIONS};
+use crate::{AVG_MASS, WINDOW_X, DIMENSIONS};
 use wasm_bindgen::prelude::*;
 
 #[repr(C)]
@@ -8,7 +8,7 @@ use wasm_bindgen::prelude::*;
 pub struct Body {
     pub pos: [f64; DIMENSIONS],
     pub vel: [f64; DIMENSIONS],
-    pub radius: f64
+    pub mass: f64
 }
 
 impl fmt::Display for Body {
@@ -25,7 +25,7 @@ impl Body {
         // let normal = Normal::new(crate::AVG_RADIUS, 10);
 
         // Radius of circle
-        let radius = crate::AVG_RADIUS;
+        let mass = crate::AVG_MASS;
         // alt:  (random() * 5.0) + crate::AVG_RADIUS;
 
         // Return new Body
@@ -36,7 +36,7 @@ impl Body {
             vel: [(random()  * 10.0 + -5.0),
                   (random() * 10.0 + -5.0),
                   (random() * 10.0 + -5.0)],
-            radius
+            mass
         }
     }
 
@@ -61,7 +61,8 @@ impl Body {
     }
 
     pub fn update_position(&mut self) {
-        self.pos[0] += self.vel[0];
-        self.pos[1] += self.vel[1];
+        for dim in 0..DIMENSIONS {
+            self.pos[dim] += self.vel[dim];
+        }
     }
 }

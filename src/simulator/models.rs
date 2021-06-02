@@ -17,7 +17,7 @@ pub fn all_body_update(sim: &mut Simulator) {
             let unit_vec = sim.bodies[i].unit_to(&sim.bodies[j], dist);
 
             // Force Scalar
-            let force = (G_CONSTANT * (sim.bodies[i].radius) * (sim.bodies[j].radius))/(dist.powi(2) + DAMPENING_FACTOR.powi(2));
+            let force = (G_CONSTANT * (sim.bodies[i].mass) * (sim.bodies[j].mass))/(dist.powi(2) + DAMPENING_FACTOR.powi(2));
 
             // Get dV Vector
             for dim in 0..DIMENSIONS {

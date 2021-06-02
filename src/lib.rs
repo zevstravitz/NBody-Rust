@@ -16,9 +16,9 @@ const WINDOW_X: i32 = 800;
 const WINDOW_Y: i32 = 600;
 
 // Simulator Constants
-const AVG_RADIUS: f64 = 100.0;
+const AVG_MASS: f64 = 125.0;
 const DIMENSIONS: usize = 3;
 
 // Gravity Constants
 const G_CONSTANT: f64 = 1.0;
-const DAMPENING_FACTOR: f64 = 5.0;
+const DAMPENING_FACTOR: f64 = 20.0;

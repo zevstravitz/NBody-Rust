@@ -28,6 +28,7 @@
   "homepage": "https://github.com/rustwasm/create-wasm-app#readme",
   "dependencies": {
     "nbody-physics": "file:../pkg",
+    "nbody-sim": "^0.1.0",
     "three": "^0.129.0"
   },
   "devDependencies": {

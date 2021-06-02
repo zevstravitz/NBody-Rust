@@ -1,6 +1,6 @@
 use js_sys::Math::random;
 use std::fmt;
-use crate::{AVG_MASS, WINDOW_X, DIMENSIONS};
+use crate::{AVG_MASS, DIMENSIONS};
 use wasm_bindgen::prelude::*;
 
 #[repr(C)]

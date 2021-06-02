@@ -9,11 +9,9 @@ use wasm_bindgen::prelude::*;
 static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
 mod simulator;
-use simulator::Simulator;
 
 // Display Constants
-const WINDOW_X: i32 = 800;
-const WINDOW_Y: i32 = 600;
+const BOUNDS: usize = 8192;
 
 // Simulator Constants
 const AVG_MASS: f64 = 70.0;

@@ -31,3 +31,5 @@ pub fn all_body_update(sim: &mut Simulator) {
         }
     }
 }
+
+pub fn barnes_hut_update(sim: &mut Simulator) {}

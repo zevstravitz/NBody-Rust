@@ -1,6 +1,6 @@
-import { memory } from "nbody-physics/physics_bg";
+// import { memory } from "nbody-physics/physics_bg";
 import * as THREE from 'three';
-import { Simulator } from "nbody-physics";
+import {Simulator} from "nbody-physics";
 
 const NUM_PARTICLES = 1000;
 const DIMENSIONS = 3;
@@ -18,7 +18,7 @@ animate();
 function init() {
 
     camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 2, 10000 );
-    camera.position.z = 5000;
+    camera.position.z = 4000;
 
     scene = new THREE.Scene();
     // scene.fog = new THREE.FogExp2( 0x000000, 0.0001 );

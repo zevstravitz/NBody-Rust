@@ -108,10 +108,7 @@ impl Octree {
         }
     }
 }
-// struct InternalNode {
-//     com: COM,
-//     children: [Octree; 8]
-// }
+
 impl InternalNode {
     fn new() -> InternalNode {
         let children = [Octree; 8];
@@ -140,23 +137,17 @@ impl InternalNode {
 }
 
 /*
-
-
-for i in 0..8 {
-    children[i] = (center.x + radius*(-1)^n, center.y + radius* (-1) ^ n+1,
+children = []
+index = 0
+for i in 0..4 {
+    if i < 2 {
+        children[index] = Octree::new([center.x + radius*(-1)^n, center.y + radius* (-1) ^ n+1, z/4)], self.radius/2)
+        children[index + 1] = Octree::new([center.x + radius*(-1)^n, center.y + radius* (-1) ^ n+1, 3z/4], self.radius/2)
+    }else{
+        children[i] = Octree::new([center.x + radius*(-1)^n, center.y + radius* (-1) ^ n+1, z/4], self.radius/2)
+        children[index+1] = Octree::new([center.x + radius*(-1)^n, center.y + radius* (-1) ^ n+1, 3z/4],self.radius/2)
+    }
+    
+    index += 2
 }
-
-
-
 */ 
-
-
-
-// public class BHTree {
-//     private Body body;     // body or aggregate body stored in this node
-//     private Quad quad;     // square region that the tree represents
-//     private BHTree NW;     // tree representing northwest quadrant
-//     private BHTree NE;     // tree representing northeast quadrant
-//     private BHTree SW;     // tree representing southwest quadrant
-//     private BHTree SE;     // tree representing southeast quadrant
-// }
